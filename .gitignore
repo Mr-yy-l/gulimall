@@ -11,8 +11,9 @@ buildNumber.properties
 .mvn/wrapper/maven-wrapper.jar
 **/.gitignore
 .idea
-*.iml
+
 **/.mvn
 **/mvnw
 **/mvnw.cmd
 **/target/
+*.iml
