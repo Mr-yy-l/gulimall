@@ -7,6 +7,8 @@ Spring:
   cloud:
     inetutils:
       default-ip-address: 127.0.0.1:8848
+  application:
+    name: gulimall-product
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
