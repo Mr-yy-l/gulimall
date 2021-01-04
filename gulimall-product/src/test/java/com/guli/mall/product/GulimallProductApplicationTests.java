@@ -25,7 +25,7 @@ class GulimallProductApplicationTests {
 //        brandService.updateById(brandEntity);
         List<BrandEntity> list = brandService.list(new QueryWrapper<BrandEntity>().eq("brand_id", 7L));
         list.forEach((item) -> {
-            System.out.println(item);
+            System.out.println("-------------->"+item.toString());
         });
 
 

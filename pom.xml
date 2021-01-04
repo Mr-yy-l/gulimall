@@ -14,11 +14,6 @@
     <name>gullimall</name>
     <description>聚合服务</description>
 
-    <properties>
-        <java.version>11</java.version>
-        <spring-cloud.version>Hoxton.SR9</spring-cloud.version>
-    </properties>
-
     <packaging>pom</packaging>
 
     <modules>
@@ -33,26 +28,5 @@
 
 
     </modules>
-
-    <dependencyManagement>
-        <dependencies>
-            <dependency>
-                <groupId>org.springframework.cloud</groupId>
-                <artifactId>spring-cloud-dependencies</artifactId>
-                <version>${spring-cloud.version}</version>
-                <type>pom</type>
-                <scope>import</scope>
-            </dependency>
-        </dependencies>
-    </dependencyManagement>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-            </plugin>
-        </plugins>
-    </build>
 
 </project>
