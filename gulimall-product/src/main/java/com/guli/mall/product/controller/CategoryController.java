@@ -29,17 +29,15 @@ public class CategoryController {
     @Autowired
     private CategoryService categoryService;
 
-    @RequestMapping("/hello")
-    public  R hello(){
-        System.out.println("===========方法被调用了");
-        return R.ok();
-    }
     /**
      * 查出所有分类以及子分类，以树形结构组装起来
      */
     @RequestMapping("/list/tree")
     public R list(){
+
         List<CategoryEntity> entities = categoryService.listWithTree();
+
+
         return R.ok().put("data", entities);
     }
 
@@ -50,7 +48,7 @@ public class CategoryController {
     @RequestMapping("/info/{catId}")
     //@RequiresPermissions("product:category:info")
     public R info(@PathVariable("catId") Long catId){
-		CategoryEntity category = categoryService.getById(catId);
+        CategoryEntity category = categoryService.getById(catId);
 
         return R.ok().put("data", category);
     }
@@ -61,7 +59,7 @@ public class CategoryController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:category:save")
     public R save(@RequestBody CategoryEntity category){
-		categoryService.save(category);
+        categoryService.save(category);
 
         return R.ok();
     }
@@ -72,16 +70,17 @@ public class CategoryController {
         categoryService.updateBatchById(Arrays.asList(category));
         return R.ok();
     }
+
     /**
      * 修改
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:category:update")
     public R update(@RequestBody CategoryEntity category){
-		categoryService.updateById(category);
-
+        categoryService.updateCascade(category);
         return R.ok();
     }
+
 
     /**
      * 删除
@@ -92,8 +91,11 @@ public class CategoryController {
     //@RequiresPermissions("product:category:delete")
     public R delete(@RequestBody Long[] catIds){
 
+
         //categoryService.removeByIds(Arrays.asList(catIds));
+
         categoryService.removeMenuByIds(Arrays.asList(catIds));
+
         return R.ok();
     }
 }

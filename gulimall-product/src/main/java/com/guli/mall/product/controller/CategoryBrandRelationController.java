@@ -85,7 +85,6 @@ public class CategoryBrandRelationController {
     /**
      * 信息
      */
-
     @RequestMapping("/info/{id}")
     //@RequiresPermissions("product:categorybrandrelation:info")
     public R info(@PathVariable("id") Long id){
@@ -100,6 +99,8 @@ public class CategoryBrandRelationController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:categorybrandrelation:save")
     public R save(@RequestBody CategoryBrandRelationEntity categoryBrandRelation){
+
+
         categoryBrandRelationService.saveDetail(categoryBrandRelation);
 
         return R.ok();

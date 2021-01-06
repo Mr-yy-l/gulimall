@@ -1,20 +1,16 @@
 package com.guli.mall.product.controller;
 
+import com.guli.mall.common.utils.PageUtils;
+import com.guli.mall.common.utils.R;
+import com.guli.mall.product.entity.SpuInfoDescEntity;
+import com.guli.mall.product.service.SpuInfoDescService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
 import java.util.Arrays;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.guli.mall.product.entity.SpuInfoDescEntity;
-import com.guli.mall.product.service.SpuInfoDescService;
-import com.guli.mall.common.utils.PageUtils;
-import com.guli.mall.common.utils.R;
 
 
 
@@ -49,7 +45,7 @@ public class SpuInfoDescController {
     @RequestMapping("/info/{spuId}")
     //@RequiresPermissions("product:spuinfodesc:info")
     public R info(@PathVariable("spuId") Long spuId){
-		SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(spuId);
+        SpuInfoDescEntity spuInfoDesc = spuInfoDescService.getById(spuId);
 
         return R.ok().put("spuInfoDesc", spuInfoDesc);
     }
@@ -60,7 +56,7 @@ public class SpuInfoDescController {
     @RequestMapping("/save")
     //@RequiresPermissions("product:spuinfodesc:save")
     public R save(@RequestBody SpuInfoDescEntity spuInfoDesc){
-		spuInfoDescService.save(spuInfoDesc);
+        spuInfoDescService.save(spuInfoDesc);
 
         return R.ok();
     }
@@ -71,7 +67,7 @@ public class SpuInfoDescController {
     @RequestMapping("/update")
     //@RequiresPermissions("product:spuinfodesc:update")
     public R update(@RequestBody SpuInfoDescEntity spuInfoDesc){
-		spuInfoDescService.updateById(spuInfoDesc);
+        spuInfoDescService.updateById(spuInfoDesc);
 
         return R.ok();
     }
@@ -82,7 +78,7 @@ public class SpuInfoDescController {
     @RequestMapping("/delete")
     //@RequiresPermissions("product:spuinfodesc:delete")
     public R delete(@RequestBody Long[] spuIds){
-		spuInfoDescService.removeByIds(Arrays.asList(spuIds));
+        spuInfoDescService.removeByIds(Arrays.asList(spuIds));
 
         return R.ok();
     }

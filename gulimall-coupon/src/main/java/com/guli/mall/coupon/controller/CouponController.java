@@ -6,6 +6,7 @@ import com.guli.mall.coupon.entity.CouponEntity;
 import com.guli.mall.coupon.service.CouponService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
@@ -22,6 +23,7 @@ import java.util.Map;
  * @email ali_L@aliyu.com
  * @date 2021-01-04 17:02:34
  */
+@RefreshScope
 @RestController
 @RequestMapping("coupon/coupon")
 public class CouponController {
