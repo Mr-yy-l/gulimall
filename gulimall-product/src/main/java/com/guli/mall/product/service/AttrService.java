@@ -49,5 +49,7 @@ public interface AttrService extends IService<AttrEntity> {
         PageUtils page = queryBaseAttrPage(params,catelogId,type);
         return R.ok().put("page", page);
     }
+
+    List<Long> selectSearchAttrIds(List<Long> attrIds);
 }
 

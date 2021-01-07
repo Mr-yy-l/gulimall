@@ -4,10 +4,12 @@ import com.guli.mall.common.utils.PageUtils;
 import com.guli.mall.common.utils.R;
 import com.guli.mall.ware.entity.WareSkuEntity;
 import com.guli.mall.ware.service.WareSkuService;
+import com.guli.mall.ware.vo.SkuHasStockVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 //import org.apache.shiro.authz.annotation.RequiresPermissions;
@@ -27,6 +29,14 @@ public class WareSkuController {
     @Autowired
     private WareSkuService wareSkuService;
 
+    //查询sku是否有库存
+    @PostMapping("/hasstock")
+    public R getSkusHasStock(@RequestBody List<Long> skuIds){
+        //sku_id，stock
+        List<SkuHasStockVo> vos =  wareSkuService.getSkusHasStock(skuIds);
+        return R.ok().setData(vos);
+    }
+
     /**
      * 列表
      */
@@ -37,7 +47,6 @@ public class WareSkuController {
 
         return R.ok().put("page", page);
     }
-
 
     /**
      * 信息

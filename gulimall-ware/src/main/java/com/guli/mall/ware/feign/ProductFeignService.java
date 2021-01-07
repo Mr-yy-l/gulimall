@@ -1,5 +1,6 @@
 package com.guli.mall.ware.feign;
 
+
 import com.guli.mall.common.utils.R;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
