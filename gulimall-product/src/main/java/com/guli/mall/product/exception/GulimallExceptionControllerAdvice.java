@@ -14,10 +14,11 @@ import java.util.Map;
 
 /**
  * 集中处理所有异常
+ * @author L
  */
 @Slf4j
 //@ResponseBody
-//@ControllerAdvice(basePackages = "com.atguigu.gulimall.product.controller")
+//@ControllerAdvice(basePackages = "com.guli.mall.product.controller")
 @RestControllerAdvice(basePackages = "com.guli.mall.product.controller")
 public class GulimallExceptionControllerAdvice {
 

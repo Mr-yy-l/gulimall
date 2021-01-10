@@ -14,6 +14,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author L
+ */
 @Slf4j
 @RequestMapping("/search/save")
 @RestController
@@ -32,7 +35,6 @@ public class ElasticSaveController {
             log.error("ElasticSaveController商品上架错误：{}", e);
             return R.error(BizCodeEnume.PRODUCT_UP_EXCEPTION.getCode(), BizCodeEnume.PRODUCT_UP_EXCEPTION.getMsg());
         }
-
         if (!b) {
             return R.ok();
         } else {

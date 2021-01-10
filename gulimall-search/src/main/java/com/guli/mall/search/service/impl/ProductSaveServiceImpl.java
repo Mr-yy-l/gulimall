@@ -35,10 +35,8 @@ public class ProductSaveServiceImpl implements ProductSaveService {
 
     @Override
     public boolean productStatusUp(List<SkuEsModel> skuEsModels) throws IOException {
-
         //保存到es
         //1、给es中建立索引。gulimall_product，建立好映射关系。
-
         //2、给es中保存这些数据
         //BulkRequest bulkRequest, RequestOptions options
         BulkRequest bulkRequest = new BulkRequest();
@@ -48,20 +46,16 @@ public class ProductSaveServiceImpl implements ProductSaveService {
             indexRequest.id(model.getSkuId().toString());
             String s = JSON.toJSONString(model);
             indexRequest.source(s, XContentType.JSON);
-
             bulkRequest.add(indexRequest);
         }
 
         BulkResponse bulk = restHighLevelClient.bulk(bulkRequest, GulimallElasticSearchConfig.COMMON_OPTIONS);
-
         //TODO 1、如果批量错误
         boolean b = bulk.hasFailures();
         List<String> collect = Arrays.stream(bulk.getItems()).map(item -> {
             return item.getId();
         }).collect(Collectors.toList());
         log.info("商品上架完成：{}，返回数据：{}",collect,bulk.toString());
-
-
         return b;
 
     }

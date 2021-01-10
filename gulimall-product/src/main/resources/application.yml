@@ -4,11 +4,21 @@ Spring:
     password: root
     url: jdbc:mysql://192.168.56.10:3306/gulimall_pms
     driver-class-name: com.mysql.cj.jdbc.Driver
+
   cloud:
     inetutils:
       default-ip-address: 127.0.0.1:8848
+
   application:
     name: gulimall-product
+
+  thymeleaf:
+    cache: false
+
+  redis:
+    host: 192.168.56.10
+    port: 6379
+
 mybatis-plus:
   mapper-locations: classpath:/mapper/**/*.xml
   global-config:
@@ -16,9 +26,10 @@ mybatis-plus:
       id-type: auto
       logic-delete-value: 1
       logic-not-delete-value: 0
+
 server:
   port: 10000
 
 logging:
   level:
-    com.atguigu.gulimall: debug
+    com.guli.mall: debug

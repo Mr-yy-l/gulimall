@@ -11,6 +11,7 @@ import com.guli.mall.product.entity.AttrGroupEntity;
 import com.guli.mall.product.service.AttrGroupService;
 import com.guli.mall.product.service.AttrService;
 import com.guli.mall.product.vo.AttrGroupWithAttrsVo;
+import com.guli.mall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,6 +22,9 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 
+/**
+ * @author L
+ */
 @Service("attrGroupService")
 public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEntity> implements AttrGroupService {
 
@@ -67,7 +71,7 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
      */
     @Override
     public List<AttrGroupWithAttrsVo> getAttrGroupWithAttrsByCatelogId(Long catelogId) {
-        //com.atguigu.gulimall.product.vo
+        //com.guli.mall.product.vo
         //1、查询分组信息
         List<AttrGroupEntity> attrGroupEntities = this.list(new QueryWrapper<AttrGroupEntity>().eq("catelog_id", catelogId));
         //2、查询所有属性
@@ -80,6 +84,15 @@ public class AttrGroupServiceImpl extends ServiceImpl<AttrGroupDao, AttrGroupEnt
         }).collect(Collectors.toList());
 
         return collect;
+    }
+
+    @Override
+    public List<SpuItemAttrGroupVo> getAttrGroupWithAttrsBySpuId(Long spuId, Long catalogId) {
+        //1、查出当前spu对应的所有属性的分组信息以及当前分组下的所有属性对应的值
+        //1）、
+        AttrGroupDao baseMapper = this.getBaseMapper();
+        List<SpuItemAttrGroupVo> vos = baseMapper.getAttrGroupWithAttrsBySpuId(spuId,catalogId);
+        return vos;
     }
 
 }

@@ -2,6 +2,9 @@ package com.guli.mall.search.vo;
 
 import lombok.Data;
 
+/**
+ * @author L
+ */
 @Data
 public class AttrResponseVo {
     /**
@@ -44,11 +47,8 @@ public class AttrResponseVo {
      * 快速展示【是否展示在介绍上；0-否 1-是】，在sku中仍然可以调整
      */
     private Integer showDesc;
-
     private Long attrGroupId;
-
     private String catelogName;
     private String groupName;
-
     private Long[] catelogPath;
 }
