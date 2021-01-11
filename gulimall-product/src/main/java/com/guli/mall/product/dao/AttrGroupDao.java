@@ -11,8 +11,6 @@ import java.util.List;
  * 属性分组
  * 
  * @author L
- * @email ali_L@aliyu.com
- * @date 2021-01-04 17:00:57
  */
 @Mapper
 public interface AttrGroupDao extends BaseMapper<AttrGroupEntity> {

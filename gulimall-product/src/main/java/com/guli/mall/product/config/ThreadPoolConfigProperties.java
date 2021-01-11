@@ -9,9 +9,9 @@ import org.springframework.stereotype.Component;
  *
  * @author L
  */
-//@ConfigurationProperties(prefix = "gulimall.thread")
-//@Component
-//@Data
+@ConfigurationProperties(prefix = "gulimall.thread")
+@Component
+@Data
 public class ThreadPoolConfigProperties {
     private Integer coreSize;
     private Integer maxSize;

@@ -6,8 +6,13 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.guli.mall.common.utils.PageUtils;
 import com.guli.mall.common.utils.Query;
 import com.guli.mall.product.dao.SkuInfoDao;
+import com.guli.mall.product.entity.SkuImagesEntity;
 import com.guli.mall.product.entity.SkuInfoEntity;
+import com.guli.mall.product.entity.SpuInfoDescEntity;
 import com.guli.mall.product.service.*;
+import com.guli.mall.product.vo.SkuItemSaleAttrVo;
+import com.guli.mall.product.vo.SkuItemVo;
+import com.guli.mall.product.vo.SpuItemAttrGroupVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -15,6 +20,9 @@ import org.springframework.util.StringUtils;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
 
 
 /**
@@ -38,8 +46,8 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
     @Autowired
     SkuSaleAttrValueService skuSaleAttrValueService;
 
-//    @Autowired
-//    ThreadPoolExecutor executor;
+    @Autowired
+    ThreadPoolExecutor executor;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -47,7 +55,6 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
                 new Query<SkuInfoEntity>().getPage(params),
                 new QueryWrapper<SkuInfoEntity>()
         );
-
         return new PageUtils(page);
     }
     @Override
@@ -118,52 +125,51 @@ public class SkuInfoServiceImpl extends ServiceImpl<SkuInfoDao, SkuInfoEntity> i
         return list;
     }
 
-//    @Override
-//    public SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException {
-//        SkuItemVo skuItemVo  = new SkuItemVo();
-//
-//        CompletableFuture<SkuInfoEntity> infoFuture = CompletableFuture.supplyAsync(() -> {
-//            //1、sku基本信息获取  pms_sku_info
-//            SkuInfoEntity info = getById(skuId);
-//            skuItemVo.setInfo(info);
-//            return info;
+    //查询商品详细休息
+    @Override
+    public SkuItemVo item(Long skuId) throws ExecutionException, InterruptedException {
+        SkuItemVo skuItemVo  = new SkuItemVo();
+        CompletableFuture<SkuInfoEntity> infoFuture = CompletableFuture.supplyAsync(() -> {
+            //1、sku基本信息获取  pms_sku_info
+            SkuInfoEntity info = getById(skuId);
+            skuItemVo.setInfo(info);
+            return info;
+        }, executor);
+        CompletableFuture<Void> saleAttrFuture = infoFuture.thenAcceptAsync((res) -> {
+            //3、获取spu的销售属性组合。
+            List<SkuItemSaleAttrVo> saleAttrVos = skuSaleAttrValueService.getSaleAttrsBySpuId(res.getSpuId());
+            skuItemVo.setSaleAttr(saleAttrVos);
+        }, executor);
+
+        CompletableFuture<Void> descFuture = infoFuture.thenAcceptAsync(res -> {
+            //4、获取spu的介绍  pms_spu_info_desc
+            SpuInfoDescEntity spuInfoDescEntity = spuInfoDescService.getById(res.getSpuId());
+            skuItemVo.setDesp(spuInfoDescEntity);
+        }, executor);
+        CompletableFuture<Void> baseAttrFuture = infoFuture.thenAcceptAsync(res -> {
+            //5、获取spu的规格参数信息。
+            List<SpuItemAttrGroupVo> attrGroupVos = attrGroupService.getAttrGroupWithAttrsBySpuId(res.getSpuId(), res.getCatalogId());
+            skuItemVo.setGroupAttrs(attrGroupVos);
+        }, executor);
+        //2、sku的图片信息  pms_sku_images
+        CompletableFuture<Void> imageFuture = CompletableFuture.runAsync(() -> {
+            List<SkuImagesEntity> images = imagesService.getImagesBySkuId(skuId);
+            skuItemVo.setImages(images);
+        }, executor);
+
+        //3、查询当前sku是否参与秒杀优惠
+//        CompletableFuture<Void> secKillFuture = CompletableFuture.runAsync(() -> {
+//            R seckillInfo = seckillFeignService.getSkuSeckillInfo(skuId);
+//            if (seckillInfo.getCode() == 0) {
+//                SeckillInfoVo seckillInfoVo = seckillInfo.getData(new TypeReference<SeckillInfoVo>() {
+//                });
+//                skuItemVo.setSeckillInfo(seckillInfoVo);
+//            }
 //        }, executor);
-//
-//        CompletableFuture<Void> saleAttrFuture = infoFuture.thenAcceptAsync((res) -> {
-//            //3、获取spu的销售属性组合。
-//            List<SkuItemSaleAttrVo> saleAttrVos = skuSaleAttrValueService.getSaleAttrsBySpuId(res.getSpuId());
-//            skuItemVo.setSaleAttr(saleAttrVos);
-//        }, executor);
-//
-//        CompletableFuture<Void> descFuture = infoFuture.thenAcceptAsync(res -> {
-//            //4、获取spu的介绍  pms_spu_info_desc
-//            SpuInfoDescEntity spuInfoDescEntity = spuInfoDescService.getById(res.getSpuId());
-//            skuItemVo.setDesp(spuInfoDescEntity);
-//        }, executor);
-//
-//        CompletableFuture<Void> baseAttrFuture = infoFuture.thenAcceptAsync(res -> {
-//            //5、获取spu的规格参数信息。
-//            List<SpuItemAttrGroupVo> attrGroupVos = attrGroupService.getAttrGroupWithAttrsBySpuId(res.getSpuId(), res.getCatalogId());
-//            skuItemVo.setGroupAttrs(attrGroupVos);
-//        }, executor);
-//        //2、sku的图片信息  pms_sku_images
-//        CompletableFuture<Void> imageFuture = CompletableFuture.runAsync(() -> {
-//            List<SkuImagesEntity> images = imagesService.getImagesBySkuId(skuId);
-//            skuItemVo.setImages(images);
-//        }, executor);
-//
-//        //3、查询当前sku是否参与秒杀优惠
-////        CompletableFuture<Void> secKillFuture = CompletableFuture.runAsync(() -> {
-////            R seckillInfo = seckillFeignService.getSkuSeckillInfo(skuId);
-////            if (seckillInfo.getCode() == 0) {
-////                SeckillInfoVo seckillInfoVo = seckillInfo.getData(new TypeReference<SeckillInfoVo>() {
-////                });
-////                skuItemVo.setSeckillInfo(seckillInfoVo);
-////            }
-////        }, executor);
-//        //等到所有任务都完成
-////        CompletableFuture.allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture,secKillFuture).get();
-//        return skuItemVo;
-//    }
+        //等到所有任务都完成
+        //CompletableFuture.allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture,secKillFuture).get();
+        CompletableFuture.allOf(saleAttrFuture,descFuture,baseAttrFuture,imageFuture).get();
+        return skuItemVo;
+    }
 
 }

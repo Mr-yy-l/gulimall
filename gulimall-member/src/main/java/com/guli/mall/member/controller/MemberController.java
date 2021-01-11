@@ -1,10 +1,16 @@
 package com.guli.mall.member.controller;
 
+import com.guli.mall.common.exception.BizCodeEnume;
 import com.guli.mall.common.utils.PageUtils;
 import com.guli.mall.common.utils.R;
 import com.guli.mall.member.entity.MemberEntity;
+import com.guli.mall.member.exception.PhoneExsitException;
+import com.guli.mall.member.exception.UsernameExistException;
 import com.guli.mall.member.feign.CouponFeignService;
 import com.guli.mall.member.service.MemberService;
+import com.guli.mall.member.vo.MemberLoginVo;
+import com.guli.mall.member.vo.MemberRegistVo;
+import com.guli.mall.member.vo.SocialUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,6 +46,45 @@ public class MemberController {
         return R.ok().put("member",memberEntity).
                 put("memberCoupon",memberCoupon.get("memberCoupon"));
     }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoginVo vo){
+        MemberEntity entity =  memberService.login(vo);
+        if(entity!=null){
+            return R.ok().setData(entity);
+        }else{
+            return R.error(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(),BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+    }
+
+    @PostMapping("/regist")
+    public R regist(@RequestBody MemberRegistVo vo){
+        try{
+            memberService.regist(vo);
+        }catch (PhoneExsitException e){
+            return R.error(BizCodeEnume.PHONE_EXIST_EXCEPTION.getCode(),BizCodeEnume.PHONE_EXIST_EXCEPTION.getMsg());
+        }catch (UsernameExistException e){
+            return R.error(BizCodeEnume.USER_EXIST_EXCEPTION.getCode(),BizCodeEnume.USER_EXIST_EXCEPTION.getMsg());
+        }
+        return R.ok();
+    }
+
+    /**
+     * @description: 第三方登录
+     * @author: Mr_L
+     * @create: 2021/1/11 23:28
+     **/
+    @PostMapping("/oauth2/login")
+    public R oauthlogin(@RequestBody SocialUser socialUser) throws Exception {
+        MemberEntity entity =  memberService.login(socialUser);
+        if(entity!=null){
+            //TODO 1、登录成功处理
+            return R.ok().setData(entity);
+        }else{
+            return R.error(BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getCode(),BizCodeEnume.LOGINACCT_PASSWORD_INVAILD_EXCEPTION.getMsg());
+        }
+    }
+
     /**
      * 列表
      */

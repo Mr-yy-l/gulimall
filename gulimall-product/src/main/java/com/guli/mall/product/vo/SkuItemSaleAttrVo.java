@@ -5,6 +5,9 @@ import lombok.ToString;
 
 import java.util.List;
 
+/**
+ * @author L
+ */
 @ToString
 @Data
 public class SkuItemSaleAttrVo {

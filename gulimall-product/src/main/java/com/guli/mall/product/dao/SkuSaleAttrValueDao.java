@@ -11,13 +11,12 @@ import java.util.List;
  * sku销售属性&值
  * 
  * @author L
- * @email ali_L@aliyu.com
- * @date 2021-01-04 17:00:57
  */
 @Mapper
 public interface SkuSaleAttrValueDao extends BaseMapper<SkuSaleAttrValueEntity> {
 
     List<String> getSkuSaleAttrValuesAsStringList(Long skuId);
 
+    //商品销售组合
     List<SkuItemSaleAttrVo> getSaleAttrsBySpuId(Long spuId);
 }

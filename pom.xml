@@ -17,6 +17,7 @@
     <packaging>pom</packaging>
 
     <modules>
+        <module>gulimall-auth-server</module>
         <module>gulimall-search</module>
         <module>gulimall-gateway</module>
         <module>gulimall-common</module>

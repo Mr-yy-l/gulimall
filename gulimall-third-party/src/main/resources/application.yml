@@ -4,11 +4,18 @@ spring:
       discovery:
         server-addr: 127.0.0.1:8848
     alicloud:
-      access-key: LTAI4G2387Qu8KWukyexSsZW
-      secret-key: NHFh8JLI92NDEiNEt7NG5XhNIFWAfO
+      access-key: nide
+      secret-key: nide
       oss:
-        endpoint: oss-cn-beijing.aliyuncs.com
-        bucket: guli-mall-learning
+        endpoint: nide
+        bucket: nide
+
+      sms:
+        host: https://smsmsgs.market.alicloudapi.com
+        path: /sms/
+        skin: 1
+        sign: 1
+        appcode: fdsagfafadfgad
 
   application:
     name: gulimall-third-party
