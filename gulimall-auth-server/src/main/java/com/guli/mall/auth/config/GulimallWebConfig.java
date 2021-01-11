@@ -4,6 +4,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
+/**
+ * 省略跳转方法
+ * @author L
+ */
 @Configuration
 public class GulimallWebConfig implements WebMvcConfigurer {
     /**

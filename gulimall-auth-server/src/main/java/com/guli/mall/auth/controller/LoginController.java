@@ -67,7 +67,7 @@ public class LoginController {
         if(login.getCode()==0){
             MemberRespVo data = login.getData("data", new TypeReference<MemberRespVo>() {
             });
-            ////成功放到session中
+            //成功放到session 中 session共享
             session.setAttribute(AuthServerConstant.LOGIN_USER,data);
             return "redirect:http://gulimall.com";
         }else {
@@ -107,9 +107,8 @@ public class LoginController {
 
     /**
      *
-     *   //TODO 重定向携带数据，利用session原理。将数据放在session中。
-     *     只要跳到下一个页面取出这个数据以后，session里面的数据就会删掉
-     *
+     * //TODO 重定向携带数据，利用session原理。将数据放在session中。
+     *  只要跳到下一个页面取出这个数据以后，session里面的数据就会删掉
      *  //TODO 1、分布式下的session问题。
      * RedirectAttributes redirectAttributes：模拟重定向携带数据
      * @param vo

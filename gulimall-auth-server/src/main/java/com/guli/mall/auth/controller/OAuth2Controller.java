@@ -73,8 +73,8 @@ public class OAuth2Controller {
                 //TODO 1、默认发的令牌。session=dsajkdjl。作用域：当前域；（解决子域session共享问题）
                 //TODO 2、使用JSON的序列化方式来序列化对象数据到redis中
                 session.setAttribute("loginUser",data);
-//                new Cookie("JSESSIONID","dadaa").setDomain("");
-//                servletResponse.addCookie();
+                //new Cookie("JSESSIONID","dadaa").setDomain("");
+                //servletResponse.addCookie();
                 //2、登录成功就跳回首页
                 return "redirect:http://gulimall.com";
             }else {
